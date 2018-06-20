@@ -119,7 +119,7 @@ public class EditorActivity extends AppCompatActivity implements
         Button plus_button = (Button) findViewById(R.id.plus_button);
         minus_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                if (mQuantityEditText.getText() != null) { //if nothing in there
+                if (!mQuantityEditText.getText().toString().matches("")) { //if nothing in there
                     String quantityString = mQuantityEditText.getText().toString().trim();
                     int quantityInt = Integer.parseInt(quantityString);
                     if (quantityInt > 0) {
@@ -136,7 +136,7 @@ public class EditorActivity extends AppCompatActivity implements
 
         plus_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                if(mQuantityEditText.getText()!=null) {
+                if(!mQuantityEditText.getText().toString().matches("")) {
                     String quantityString = mQuantityEditText.getText().toString().trim();
                     int quantityInt = Integer.parseInt(quantityString);
                     quantityInt++;
@@ -184,11 +184,12 @@ public class EditorActivity extends AppCompatActivity implements
         // Check if this is supposed to be a new item
         // and check if all the fields in the editor are blank
         if (mCurrentItemUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
-                TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(supplierString)
-                && TextUtils.isEmpty(supplierNrString)) {
-            // Since no fields were modified, we can return early without creating a new item
-            // No need to create ContentValues and no need to do any ContentProvider operations.
+                TextUtils.isEmpty(nameString) || TextUtils.isEmpty(priceString) ||
+                TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(supplierString)
+                || TextUtils.isEmpty(supplierNrString)) {
+                    Toast.makeText(this, getString(R.string.empty_field),
+                            Toast.LENGTH_SHORT).show();
+            all_fields_valid=false;
             return;
         }
 
@@ -274,8 +275,12 @@ public class EditorActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             } else {
                 // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_update_item_successful),
-                        Toast.LENGTH_SHORT).show();
+                if (!TextUtils.isEmpty(nameString) && !TextUtils.isEmpty(priceString) &&
+                        !TextUtils.isEmpty(quantityString) && !TextUtils.isEmpty(supplierString)
+                        && !TextUtils.isEmpty(supplierNrString)) {
+                    Toast.makeText(this, getString(R.string.editor_update_item_successful),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -449,7 +454,7 @@ public class EditorActivity extends AppCompatActivity implements
     private void showUnsavedChangesDialog(
             DialogInterface.OnClickListener discardButtonClickListener) {
         // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the postivie and negative buttons on the dialog.
+        // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.unsaved_changes_dialog_msg);
         builder.setPositiveButton(R.string.discard, discardButtonClickListener);

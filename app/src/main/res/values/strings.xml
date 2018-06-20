@@ -100,7 +100,7 @@
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_supplier_nr">Supplier Nr</string>
 
-    <string name="sold_button">Sold</string>
+    <string name="sold_button">Sale</string>
 
     <string name="edit_button">Edit</string>
 
@@ -114,7 +114,9 @@
 
     <string name="contact_supplier">Contact Supplier</string>
 
-    <string name="empty_field">No empty fields</string>
+    <string name="empty_field">No empty fields!</string>
+
+    <string name="didnt_save_empty_field">Did not save. No empty fields!</string>
 
 
 </resources>
